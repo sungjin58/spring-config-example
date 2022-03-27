@@ -38,3 +38,6 @@ logging:
     org.hibernate:
       type.descriptor.sql: DEBUG
       SQL: DEBUG
+      
+sungjin:
+  test: test
