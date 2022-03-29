@@ -29,3 +29,6 @@ management:
 token:
   expiration_time: 864000000 # 10 Days
   secret: user_token
+
+test:
+  message: Hello
