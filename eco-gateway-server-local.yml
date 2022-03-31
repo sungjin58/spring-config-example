@@ -30,7 +30,6 @@ spring:
             - Path=/eco-api-base/**
           filters:
             - RewritePath=/eco-api-base/(?<segment>.*), /$\{segment}
-            - AuthorizationHeaderFilter
         #  ===================== eco-api-base end ========================
 
         #  ===================== eco-api-order start ========================
