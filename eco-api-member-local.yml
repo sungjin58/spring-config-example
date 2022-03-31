@@ -9,4 +9,4 @@ test:
   
 api:
   base:
-    by-member-id: lb://ECO_API_BASE/api/v1/sites/by-member-id/%s
+    by-member-id: http://127.0.0.1:8080/eco-api-base/api/v1/sites/by-member-id/%s
