@@ -6,3 +6,7 @@ management:
 
 test:
   message: Hello
+  
+api:
+  base:
+    by-member-id: lb:ECO_API_BASE/api/v1/sites/by-member-id/%s
