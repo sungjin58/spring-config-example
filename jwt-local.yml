@@ -1,3 +1,3 @@
 token:
   expiration_time: 864000000 # 10 Days
-  secret: user_token
+  secret: '{cipher}56f871611a1a10bf4464f954df23932dc177e2ce35c0d9825fb8ba4164ba73ae'
