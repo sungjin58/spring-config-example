@@ -9,4 +9,4 @@ test:
   
 api:
   base:
-    by-member-id: http://ecp-api-base/eco-api-base/api/v1/sites/by-member-id/%s
+    by-member-id: http://ECO_API_BASE/eco-api-base/api/v1/sites/by-member-id/%s
