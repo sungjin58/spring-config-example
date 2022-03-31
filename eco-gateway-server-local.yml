@@ -1,0 +1,97 @@
+spring:
+  rabbitmq:
+    host: 127.0.01
+    port: 5672
+    username: guest
+    password: guest
+  config:
+    import: optional:configserver:lb://ECO-CONFIG-SERVER
+    use-legacy-processing: true
+  cloud:
+    gateway:
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: Spring Cloud Gateway GlobalFilter
+            preLogger: true
+            postLogger: true
+      routes:
+        - id: eco-config-server
+          uri: lb://ECO-CONFIG-SERVER
+          predicates:
+            - Path=/eco-config-server/**
+          filters:
+            - RewritePath=/eco-api-base/(?<segment>.*), /$\{segment}
+            - CustomFilter
+        #  ===================== eco-api-base start ========================
+        - id: eco-api-base
+          uri: lb://ECO-API-BASE
+          predicates:
+            - Path=/eco-api-base/**
+          filters:
+            - RewritePath=/eco-api-base/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+        #  ===================== eco-api-base end ========================
+
+        #  ===================== eco-api-order start ========================
+        - id: eco-api-order
+          uri: lb://ECO-API-ORDER
+          predicates:
+            - Path=/eco-api-order/**
+          filters:
+            - RewritePath=/eco-api-base/(?<segment>.*), /$\{segment}
+        #  ===================== eco-api-order end ========================
+
+        #  ===================== eco-api-measurement start ========================
+        - id: eco-api-measurement
+          uri: lb://ECO-API-MEASUREMENT
+          predicates:
+            - Path=/eco-api-measurement/**
+          filters:
+            - RewritePath=/eco-api-base/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+        #  ===================== eco-api-measurement end ========================
+
+        #  ===================== eco-api-member start ========================
+        - id: eco-api-member
+          uri: lb://ECO-API-MEMBER
+          predicates:
+            - Path=/eco-api-member/api/v1/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/eco-api-member/(?<segment>.*), /$\{segment}
+
+        - id: eco-api-member
+          uri: lb://ECO-API-MEMBER
+          predicates:
+            - Path=/eco-api-member/api/v1/members
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/eco-api-member/(?<segment>.*), /$\{segment}
+        # actuator, Config Server를 위한 설정
+        - id: eco-api-member
+          uri: lb://ECO-API-MEMBER
+          predicates:
+            - Path=/eco-api-member/actuator/**
+            - Method=POST,GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/eco-api-member/(?<segment>.*), /$\{segment}
+
+        - id: eco-api-member
+          uri: lb://ECO-API-MEMBER
+          predicates:
+            - Path=/eco-api-member/**
+            - Method=GET,DELETE,PUT,PATCH
+          filters:
+            - RewritePath=/eco-api-member/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+        #  ===================== eco-api-member end ========================
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health,beans,httptrace,busrefresh
