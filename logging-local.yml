@@ -1,6 +1,7 @@
 # TRACE  <  DEBUG  <  INFO  <  WARN  <  ERROR
 logging:
   level:
+    kr.co.qntech.eco: DEBUG
     org.hibernate:
       type.descriptor.sql: DEBUG
       SQL: DEBUG
